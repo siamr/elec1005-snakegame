@@ -172,10 +172,14 @@ class Game:
     
     def game_end(self):
         end = False
-        if self.snake.position[0] >= self.settings.width or self.snake.position[0] < 0:
-            end = True
-        if self.snake.position[1] >= self.settings.height or self.snake.position[1] < 0:
-            end = True
+        if self.snake.position[0] >= 28:
+            self.snake.position[0] -= 28
+        if self.snake.position[0] <= 0:
+            self.snake.position[0] += 28
+        if self.snake.position[1] >= self.settings.height:
+            self.snake.position[1] -= 28
+        if self.snake.position[1] <= 0:
+            self.snake.position[1] += 28
         if self.snake.segments[0] in self.snake.segments[1:]:
             end = True
 
