@@ -162,6 +162,8 @@ class Game:
             reward = 1
             self.snake.score += 1
             self.snake_speed *= 1.1
+            if self.snake_speed > 20:
+                self.snake_speed = 20
         else:
             self.snake.segments.pop()
             reward = 0
