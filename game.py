@@ -118,7 +118,7 @@ class Game:
                           1 : 'down',
                           2 : 'left',
                           3 : 'right'}       
-        
+        self.snake_speed = 5
     def restart_game(self):
         self.snake.initialize()
         self.strawberry.initialize()
@@ -161,6 +161,7 @@ class Game:
             self.strawberry.random_pos(self.snake)
             reward = 1
             self.snake.score += 1
+            self.snake_speed *= 1.1
         else:
             self.snake.segments.pop()
             reward = 0

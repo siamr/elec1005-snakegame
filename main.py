@@ -104,7 +104,7 @@ def game_loop(player, fps=10):
         pygame.event.pump()
 
         move = human_move()
-        fps = 5
+        fps = game.snake_speed
 
         game.do_move(move)
 
