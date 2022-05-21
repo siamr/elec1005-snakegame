@@ -9,9 +9,9 @@ import numpy as np
 
 class Settings:
     def __init__(self):
-        self.width = 28
-        self.height = 28
-        self.rect_len = 15
+        self.width = 56
+        self.height = 56
+        self.rect_len = 30
 
 class Snake:
     def __init__(self):
@@ -21,10 +21,10 @@ class Snake:
         self.image_left = pygame.image.load('images/head_left.bmp')
         self.image_right = pygame.image.load('images/head_right.bmp')
 
-        self.tail_up = pygame.image.load('images/tail_up.bmp')
-        self.tail_down = pygame.image.load('images/tail_down.bmp')
-        self.tail_left = pygame.image.load('images/tail_left.bmp')
-        self.tail_right = pygame.image.load('images/tail_right.bmp')
+        self.tail_up = pygame.image.load('images/body.bmp')
+        self.tail_down = pygame.image.load('images/body.bmp')
+        self.tail_left = pygame.image.load('images/body.bmp')
+        self.tail_right = pygame.image.load('images/body.bmp')
             
         self.image_body = pygame.image.load('images/body.bmp')
 
@@ -35,7 +35,7 @@ class Snake:
         self.position = [6, 6]
         self.segments = [[6 - i, 6] for i in range(3)]
         self.speed = 5
-        self.life = 1
+        self.life = 0
         self.score = 0
 
     def blit_body(self, x, y, screen):
@@ -85,13 +85,14 @@ class Strawberry():
     def __init__(self, settings):
         self.settings = settings
         
-        self.style = str(random.randint(1, 8))
-        self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')        
+        self.style = str(random.randint(1, 5))
+        self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')            
         self.initialize()
         
     def random_pos(self, snake):
-        self.style = str(random.randint(1, 8))
-        self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')                
+        self.style = str(random.randint(1, 5))
+        self.image = pygame.image.load('images/food' + str(self.style) + '.bmp')
+                         
         
         self.position[0] = random.randint(0, self.settings.width-1)
         self.position[1] = random.randint(0, self.settings.height-1)
@@ -123,8 +124,8 @@ class Game:
         
         
     def restart_game(self):
-        self.do_move(3)
         self.snake.initialize()
+        self.do_move(1)
         self.strawberry.initialize()
 
     def current_state(self):         
@@ -173,8 +174,10 @@ class Game:
                     self.snake.speed*=1.025
             if self.snake.speed >= 30:
                 self.snake.speed = 30
-            if self.snake.score % 10 == 0:
-                self.snake.life +=1
+            if self.snake.score > 0:
+                if self.snake.score % 10 == 0:
+                    self.snake.life += 1
+                
             
         else:
             self.snake.segments.pop()
@@ -191,13 +194,14 @@ class Game:
             self.snake.position[0] -= 28
         if self.snake.position[0] <= 0:
             self.snake.position[0] += 28
-        if self.snake.position[1] >= self.settings.height:
+        if self.snake.position[1] >= 28:
             self.snake.position[1] -= 28
         if self.snake.position[1] <= 0:
             self.snake.position[1] += 28
         if self.snake.segments[0] in self.snake.segments[1:]:
             self.snake.life -= 0.5
-        if self.snake.life ==0:
+        if self.snake.life < 0:
+            self.snake.life = 0
             end = True
 
         return end
