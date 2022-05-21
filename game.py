@@ -34,7 +34,9 @@ class Snake:
     def initialize(self):
         self.position = [6, 6]
         self.segments = [[6 - i, 6] for i in range(3)]
+        self.speed = 5
         self.score = 0
+        self.life = 1
 
     def blit_body(self, x, y, screen):
         screen.blit(self.image_body, (x, y))
@@ -118,8 +120,10 @@ class Game:
                           1 : 'down',
                           2 : 'left',
                           3 : 'right'}       
-        self.snake_speed = 5
+        
+        
     def restart_game(self):
+        self.do_move(3)
         self.snake.initialize()
         self.strawberry.initialize()
 
@@ -161,9 +165,17 @@ class Game:
             self.strawberry.random_pos(self.snake)
             reward = 1
             self.snake.score += 1
-            self.snake_speed *= 1.1
-            if self.snake_speed > 20:
-                self.snake_speed = 20
+            self.snake.speed *= 1.1
+            if self.snake.speed > 20 and self.snake.score < 20:
+                self.snake.speed = 20
+            if self.snake.score >20: 
+                if self.snake.score % 5 == 0:
+                    self.snake.speed*=1.025
+            if self.snake.speed >= 30:
+                self.snake.speed = 30
+            if self.snake.score % 10 == 0:
+                self.snake.life +=1
+            
         else:
             self.snake.segments.pop()
             reward = 0
@@ -184,6 +196,8 @@ class Game:
         if self.snake.position[1] <= 0:
             self.snake.position[1] += 28
         if self.snake.segments[0] in self.snake.segments[1:]:
+            self.snake.life -= 0.5
+        if self.snake.life ==0:
             end = True
 
         return end
@@ -191,5 +205,8 @@ class Game:
     def blit_score(self, color, screen):
         font = pygame.font.SysFont(None, 25)
         text = font.render('Score: ' + str(self.snake.score), True, color)
+        life_text = font.render('Lives: ' + str(self.snake.life).split(".")[0], True, color)
         screen.blit(text, (0, 0))
+        screen.blit(life_text, (100, 0))
+        
 
