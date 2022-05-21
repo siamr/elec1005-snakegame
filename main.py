@@ -31,7 +31,7 @@ pygame.init()
 fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((game.settings.width * 15, game.settings.height * 15))
 pygame.display.set_caption('Gluttonous')
-
+background = pygame.image.load('images/background.png')
 crash_sound = pygame.mixer.Sound('./sound/crash.wav')
 
 
@@ -87,10 +87,11 @@ def initial_interface():
                 pygame.quit()
 
         screen.fill(white)
-        message_display('Gluttonous', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
+        screen.blit(background, (0, 0))
+        message_display('', game.settings.width / 2 * 15, game.settings.height / 4 * 15)
 
-        button('Go!', 80, 240, 80, 40, green, bright_green, game_loop, 'human')
-        button('Quit', 270, 240, 80, 40, red, bright_red, quitgame)
+        button('Go!', 350, 490, 80, 40, green, bright_green, game_loop, 'human')
+        button('Quit', 500, 490, 80, 40, red, bright_red, quitgame)
 
         pygame.display.update()
         pygame.time.Clock().tick(15)
