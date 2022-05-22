@@ -108,7 +108,8 @@ class Strawberry():
    
     def initialize(self):
         self.position = [15, 10]
-      
+
+  
         
 class Game:
     """
@@ -190,6 +191,7 @@ class Game:
     
     def game_end(self):
         end = False
+        # wrapping the snake
         if self.snake.position[0] >= 28:
             self.snake.position[0] -= 28
         if self.snake.position[0] <= 0:
